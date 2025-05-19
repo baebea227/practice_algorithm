@@ -8,36 +8,32 @@ int main() {
     int t;
     cin >> t;
     
-    int mySet[21] = {0};
+    int mySet = 0;
     string s;
     int x;
     while(t--) {
         cin >> s;
         if (s == "add") {
             cin >> x;
-            mySet[x] = 1;
+            mySet |= (1 << (x - 1));
         }
         else if (s == "remove") {
             cin >> x;
-            mySet[x] = 0;
+            mySet &= ~(1 << (x - 1));
         }
         else if (s == "check") {
             cin >> x;
-            cout << mySet[x] << '\n';
+            cout << (mySet & (1 << (x - 1)) ? 1 : 0 ) << '\n';
         }
         else if (s == "toggle") {
             cin >> x;
-            mySet[x] = mySet[x] ? 0 : 1;
+            mySet ^= (1 << (x - 1));
         }
         else if (s == "all") {
-            for (int i=0; i<21; i++) {
-                mySet[i] = 1;
-            }
+            mySet = (1 << 20) - 1;
         }
         else if (s == "empty") {
-            for (int i=0; i<21; i++) {
-                mySet[i] = 0;
-            }
+            mySet = 0; 
         }
     }
 }
