@@ -28,25 +28,29 @@ int main() {
         int qSize = q.size();
         for (int i=0; i<qSize; i++) {
             for (int j=0; j<4; j++) {
-                int nx = q.front().first + dx[j];
-                int ny = q.front().second + dy[j];
+                auto[x, y] = q.front();
+                int nx = x + dx[j];
+                int ny = y + dy[j];
                 if (nx >= 0 && ny >= 0 && nx < n && ny < m && arr[nx][ny] == 0) {
-                    arr[nx][ny] = 1;
+                    arr[nx][ny] = arr[x][y] + 1;
                     q.push({nx, ny});
                 }
             }
             q.pop();
         }
-        cnt++;
     }
 
+    int maxXY = 0;
     for (int i=0; i<n; i++) {
         for (int j=0; j<m; j++) {
             if (arr[i][j] == 0) {
                 cout << -1 << '\n';
                 return 0;
             }
+            else {
+                maxXY = max(maxXY, arr[i][j]);
+            }
         }
     }
-    cout << cnt << '\n';
+    cout << maxXY - 1 << '\n';
 }
