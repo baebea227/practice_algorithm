@@ -1,31 +1,13 @@
 #include <iostream>
 using namespace std;
 
-int num = 0;
-
-void zSearch(int n, int r, int c, int x, int y) {
-    if(n == 1) {
-        cout << num << '\n';
-        return;
-    }
-    else {
-        n = n/2;
-        if(c < x+n && r < y+n) {
-            zSearch(n, r, c, x, y);
-        }
-        else if(r < y+n) {
-            num += n*n;
-            zSearch(n, r, c, x+n, y);
-        }
-        else if(c < x+n) {
-            num += n*n*2;
-            zSearch(n, r, c, x, y+n);
-        }
-        else {
-            num += n*n*3;
-            zSearch(n, r, c, x+n, y+n);
-        }
-    }
+int zSearch(int n, int r, int c) {
+    if(n == 0) return 0;
+    n = n/2;
+    if(r < n && c < n) return zSearch(n, r, c);
+    else if(r < n) return zSearch(n, r, c-n) + n*n;
+    else if(c < n) return zSearch(n, r-n, c) + n*n * 2;
+    else return zSearch(n, r-n, c-n) + n*n * 3;
 }
 
 int main() {
@@ -37,5 +19,5 @@ int main() {
     
     int powN=1;
     for (int i=0; i<n; i++) powN *= 2;
-    zSearch(powN, r, c, 0, 0);
+    cout << zSearch(powN, r, c) << '\n';
 }
