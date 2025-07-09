@@ -15,17 +15,18 @@ int bfs(vector<vector<int>> &v, int user, int target, int n) {
         int qSize = q.size();
         for (int i=0; i<qSize; i++) {
             int qFront = q.front();
-            for(int j=0; j<v[qFront].size(); j++) {
-                if(v[qFront][j] == target) return cnt;
-                if(!visited[v[qFront][j]]) {
-                    q.push(v[qFront][j]);
-                    visited[v[qFront][j]] = true;
+            for(int next : v[qFront]) {
+                if(next == target) return cnt;
+                if(!visited[next]) {
+                    q.push(next);
+                    visited[next] = true;
                 }
             }
             q.pop();
         }
         cnt++;
     }
+    return 0;
 }
 
 int main() {
