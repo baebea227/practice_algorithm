@@ -1,5 +1,4 @@
 #include <iostream>
-#include <map>
 #include <queue>
 using namespace std;
 
@@ -9,7 +8,7 @@ int main() {
     
     int n, m;
     cin >> n >> m;
-    map<int, int> shortcuts;
+    int shortcuts[101] = {0};
 
     for(int i=0; i<n+m; i++) {
         int a, b;
@@ -28,9 +27,7 @@ int main() {
             int qFront = q.front();
             for(int i=1; i<=6; i++) {
                 int next = qFront + i;
-                if(shortcuts.find(next) != shortcuts.end()) {
-                    next = shortcuts[next];
-                }
+                if(shortcuts[next]) next = shortcuts[next];
                 if(next == 100) {
                     cout << cnt+1 << '\n';
                     return 0;
