@@ -8,16 +8,13 @@ int main() {
     
     int n, k;
     cin >> n >> k;
-    
-    vector<int> w(n+1), v(n+1);
-    for(int i=1; i<n+1; i++) {
-        cin >> w[i] >> v[i];
-    }
 
     vector<int> dp(k+1, 0);
     for(int i=1; i<n+1; i++) {
-        for (int j=k; j>=w[i]; j--) {
-            dp[j] = max(dp[j], dp[j-w[i]] + v[i]);
+        int w, v;
+        cin >> w >> v;
+        for (int j=k; j>=w; j--) {
+            dp[j] = max(dp[j], dp[j-w] + v);
         }
     }
 
