@@ -6,14 +6,13 @@ int A, C;
 long long solve(int n) {
     if(n == 0) return 1;
 
-    long long result;
+    long long val = solve(n/2) % C;
+    val = val * val % C;
     if(n % 2 == 0) {
-        result = solve(n/2) % C;
-        return (result * result) % C;
+        return val;
     }
     else {
-        result = solve((n-1)/2) % C;
-        return (((result * result) % C) * (A % C)) % C;
+        return (val * (A % C)) % C;
     }
 }
 
