@@ -2,27 +2,23 @@
 using namespace std;
 
 int R, C, result;
-string board[21];
+int board[21][21];
 
-bool seq[26];
 int dx[4] = {1, -1, 0, 0};
 int dy[4] = {0, 0, 1, -1};
 
-void dfs(int x, int y, int length) {
+void dfs(int x, int y, int num, int length) {
     result = max(result, length);
-    seq[(board[x][y]-'A')] = true;
 
     for(int i=0; i<4; i++) {
         int nx = x + dx[i];
         int ny = y + dy[i];
 
         if(nx < 0 || nx >= R || ny < 0 || ny >= C) continue;
-        if(seq[(board[nx][ny]-'A')]) continue;
+        if(num & board[nx][ny]) continue;
 
-        dfs(nx, ny, length+1);
+        dfs(nx, ny, num | board[nx][ny], length+1);
     }
-
-    seq[(board[x][y]-'A')] = false;
 }
 
 int main() {
@@ -30,9 +26,15 @@ int main() {
     cin.tie(nullptr);
     
     cin >> R >> C;
-    for(int i=0; i<R; i++) cin >> board[i];
+    for(int i=0; i<R; i++) {
+        string line;
+        cin >> line;
+        for(int j=0; j<C; j++) {
+            board[i][j] = 1 << (line[j]-'A');
+        }
+    };
 
-    dfs(0, 0, 1);
+    dfs(0, 0, board[0][0], 1);
 
     cout << result << '\n';
 }
