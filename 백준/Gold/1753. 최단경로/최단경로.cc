@@ -10,25 +10,29 @@ int main() {
     cin.tie(nullptr);
     
     int V, E, K;
-    cin >> V >> E; // 노드 개수, 간선 개수
-    cin >> K; // 출발노드
-    vector<pair<int, int>> graph[V+1]; // graph[출발노드] = {도착노드, 가중치}
+    cin >> V >> E >> K;
+
+    vector<vector<pair<int, int>>> graph(V+1);
     for(int i=0; i<E; i++) {
-        int u, v, w;
+        int u, v, w; 
         cin >> u >> v >> w;
-        graph[u].push_back({v, w}); // 노드 1부터 시작
+        graph[u].push_back({v, w});
     }
     
-    vector<int> dist(V+1, INF); // dist[도착노드] = 총 거리
-    priority_queue<pair<int, int>> pq; // (-거리, 노드) 삽입/삭제 시 음수 붙임
+    vector<int> dist(V+1, INF);
+    priority_queue<pair<int, int>> pq;
 
     dist[K] = 0;
     pq.push({0, K});
+
     while(!pq.empty()) {
         int currDist = -pq.top().first;
         int currNode = pq.top().second;
         pq.pop();
-        for(auto next : graph[currNode]) { // 현재 노드에 연결된 다음 노드 탐색
+
+        if(currDist > dist[currNode]) continue;
+      
+        for(auto next : graph[currNode]) {
             int nextNode = next.first;
             int nextDist = currDist + next.second;
             if(nextDist < dist[nextNode]) {
