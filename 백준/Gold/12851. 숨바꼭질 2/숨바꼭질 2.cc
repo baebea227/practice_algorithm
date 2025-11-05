@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <map>
 using namespace std;
 
 int main() {
@@ -11,19 +10,14 @@ int main() {
     int N, K;
     cin >> N >> K;
 
-    if(N >= K) {
-        cout << N-K << " " << 1 << '\n';
-        return 0;
-    }
-
-    int MAX = K*2+1;
+    int MAX = 100001;
     vector<int> time(MAX, -1);
     vector<int> ways(MAX, 0);
     queue<int> q;
     
+    q.push(N);
     time[N] = 0;
     ways[N] = 1;
-    q.push(N);
 
     while(!q.empty()) {
         int curr = q.front();
