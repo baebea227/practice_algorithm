@@ -3,12 +3,14 @@
 
 #include <iostream>
 using namespace std;
+using ll = long long;
+
+const ll mod = 1000000007;
 
 struct Mat {
-    long long m[2][2];
+    ll m[2][2];
 };
 
-const long long maxNum = 1000000007;
 const Mat base = {{{1, 1}, {1, 0}}};
 
 Mat MatMul(const Mat& a, const Mat& b) {
@@ -17,7 +19,7 @@ Mat MatMul(const Mat& a, const Mat& b) {
     for(int i=0; i<2; i++) {
         for(int j=0; j<2; j++) {
             for(int k=0; k<2; k++) {
-                c.m[i][j] = (c.m[i][j] + a.m[i][k] * b.m[k][j]) % maxNum;
+                c.m[i][j] = (c.m[i][j] + a.m[i][k] * b.m[k][j]) % mod;
             }
         }
     }
@@ -25,21 +27,22 @@ Mat MatMul(const Mat& a, const Mat& b) {
     return c;
 }
 
-Mat Fib(long long n) {
+Mat Fib(ll n) {
     if(n == 1) return base;
 
     Mat half = Fib(n/2);
-    half = MatMul(half, half);
+    Mat res = MatMul(half, half);
 
-    if(n % 2) return MatMul(half, base);
-    else return half;
+    if(n % 2) res = MatMul(res, base);
+    
+    return res;
 }
 
 void solve() {
-    long long n;
+    ll n;
     cin >> n;
     
-    cout << Fib(n).m[0][1] % maxNum << "\n";
+    cout << Fib(n).m[0][1] << "\n";
 }
 
 int main() {
