@@ -46,36 +46,40 @@ int main() {
     int row, col, m;
     cin >> row >> col >> m;
 
-    vector<vector<Shark>> board(row, vector<Shark>(col, {0, 0, 0}));
-    vector<vector<Shark>> temp(row, vector<Shark>(col));
+    vector<Shark> Sharks(m);
+    vector<vector<int>> board(row, vector<int>(col, -1));
+    vector<vector<int>> temp(row, vector<int>(col, -1));
     
     for(int i=0; i<m; i++) {
         int r, c, speed, dir, size;
         cin >> r >> c >> speed >> dir >> size;
-        board[r-1][c-1] = {speed, dir-1, size};
+        board[r-1][c-1] = i;
+        Sharks[i] = {speed, dir-1, size};
     }
     
     int ans = 0;
     
     for(int t=0; t<col; t++) { // 1. Man moves
         // 2. Catch
-        for(int j=0; j<row; j++) {
-            if(board[j][t].size > 0) {
-                ans += board[j][t].size;
-                board[j][t] = {0, 0, 0};
+        for(int i=0; i<row; i++) {
+            if(board[i][t] != -1) {
+                ans += Sharks[board[i][t]].size;
+                board[i][t] = -1;
                 break;
             }
         }
         
         // 3. Sharks move
-        fill(temp.begin(), temp.end(), vector<Shark>(col, {0, 0, 0}));
-        for(int j=0; j<col; j++) {
-            for(int k=0; k<row; k++) {
-                if(board[k][j].size > 0) {
-                    pos next = move({k, j}, board[k][j], row, col);
+        for(int i=0; i<row; i++) fill(temp[i].begin(), temp[i].end(), -1);
+        for(int r=0; r<row; r++) {
+            for(int c=0; c<col; c++) {
+                if(board[r][c] != -1) {
+                    pos next = move({r, c}, Sharks[board[r][c]], row, col);
+                    int target = temp[next.r][next.c];
+                    int curr = board[r][c];
     
-                    if(temp[next.r][next.c].size < board[k][j].size) {
-                        temp[next.r][next.c] = board[k][j];
+                    if(target == -1 || Sharks[target].size < Sharks[curr].size) {
+                        temp[next.r][next.c] = curr;
                     }
                 }
             }
