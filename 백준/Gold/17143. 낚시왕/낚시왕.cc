@@ -15,24 +15,36 @@ pos move(pos cur, Shark& shark, int row, int col) {
     int s = shark.speed;
     int d = shark.dir;
 
-    // up, down, right, left
-    int dr[4] = {-1, 1, 0, 0};
-    int dc[4] = {0, 0, 1, -1};
+    if (d == 0 || d == 1) { // up, down
+        if (row > 1) {
+            int cycle = (row - 1) * 2;
+            
+            int start = (d == 1) ? cur.r : cycle - cur.r;
+            int next = (start + s) % cycle;
 
-    s = (d < 2) ? s % ((row - 1) * 2) : s % ((col - 1) * 2);
-
-    while(s > 0) {
-        int nr = cur.r + dr[d];
-        int nc = cur.c + dc[d];
-
-        if(nr < 0 || nr >= row || nc < 0 || nc >= col) {
-            d = (d % 2 == 0) ? d + 1 : d - 1;
-            continue;
+            if (next < row) {
+                cur.r = next;
+                d = 1;
+            } else {
+                cur.r = cycle - next;
+                d = 0;
+            }
         }
+    } else { // right, left
+        if (col > 1) {
+            int cycle = (col - 1) * 2;
+            
+            int start = (d == 2) ? cur.c : cycle - cur.c;
+            int next = (start + s) % cycle;
 
-        cur.r = nr;
-        cur.c = nc;
-        s--;
+            if (next < col) {
+                cur.c = next;
+                d = 2;
+            } else {
+                cur.c = cycle - next;
+                d = 3;
+            }
+        }
     }
 
     shark.dir = d;
@@ -70,7 +82,7 @@ int main() {
         }
         
         // 3. Sharks move
-        for(int i=0; i<row; i++) fill(temp[i].begin(), temp[i].end(), -1);
+        fill(temp.begin(), temp.end(), vector<int>(col, -1));
         for(int r=0; r<row; r++) {
             for(int c=0; c<col; c++) {
                 if(board[r][c] != -1) {
